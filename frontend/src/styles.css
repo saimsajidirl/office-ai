@@ -714,13 +714,16 @@ input:focus {
 }
 
 .footer-mark {
+  display: grid;
   width: 32px;
   height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
   border-radius: 9px;
 }
 
 .footer-brand strong,
-.footer-brand span {
+.footer-tagline {
   display: block;
 }
 
@@ -729,7 +732,7 @@ input:focus {
   font: 700 13px "Manrope", sans-serif;
 }
 
-.footer-brand div span {
+.footer-tagline {
   margin-top: 2px;
 }
 

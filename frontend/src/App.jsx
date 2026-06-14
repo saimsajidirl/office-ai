@@ -56,17 +56,18 @@ const FORMATS = [
   },
 ];
 
-const SAMPLE_TEXT = `Final Cost Breakdown
-Ryzen 5 3600 (Tray/No Box) - Used - Rs. 16,500
-Gigabyte B450M DS3H - Used - Rs. 21,500
-Corsair Vengeance LPX 16GB (2x8GB) 3200MHz - Used - Rs. 11,000
-Lexar NQ100 256GB - New - Rs. 7,200
-Sapphire Pulse RX 5700 XT 8GB - Used - Rs. 52,000
-Dell Professional P2419H (24" IPS 1080p) - Used - Rs. 20,000
-Basic Default Case - Used - Rs. 0 (Default with PC)
-PC & Monitor Total: Rs. 144,200
+const SAMPLE_TEXT = `Workshop Registration List
+Alex Morgan - alex@example.com - Product Design - Confirmed
+Jordan Lee - jordan@example.com - Marketing - Confirmed
+Taylor Smith - taylor@example.com - Engineering - Pending
+Casey Brown - casey@example.com - Customer Support - Confirmed
+Morgan Davis - morgan@example.com - Operations - Pending
 
-Remember to inspect the used monitor for white spots or dead pixels.`;
+Event: Team Collaboration Workshop
+Date: October 15
+Location: Main Conference Room
+
+Please organize the attendee details and event information into clear columns.`;
 
 function readHistory() {
   try {
@@ -238,7 +239,7 @@ export default function App() {
               <textarea
                 value={text}
                 onChange={(event) => setText(event.target.value)}
-                placeholder="Paste a price list, report, meeting notes, product data, research, or any unstructured text..."
+                placeholder="Paste a list, report, meeting notes, survey responses, or any unstructured text..."
                 maxLength={50000}
                 required
               />
@@ -283,7 +284,7 @@ export default function App() {
               <input
                 value={instructions}
                 onChange={(event) => setInstructions(event.target.value)}
-                placeholder='For example: "Separate furniture from PC parts"'
+                placeholder='For example: "Sort entries by date and add a status column"'
                 maxLength={2000}
               />
             </label>
@@ -421,7 +422,9 @@ export default function App() {
           </span>
           <div>
             <strong>Office AI</strong>
-            <span>Turn unstructured text into useful files.</span>
+            <span className="footer-tagline">
+              Turn unstructured text into useful files.
+            </span>
           </div>
         </div>
         <nav className="footer-nav" aria-label="Footer navigation">
