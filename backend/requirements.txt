@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+langchain
+langchain-google-genai
+pydantic-settings
+openpyxl
+python-docx
+reportlab
+pytest
+httpx
