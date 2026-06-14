@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -116,19 +116,10 @@ export default function App() {
   const [history, setHistory] = useState(readHistory);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [apiReady, setApiReady] = useState(null);
-
   const selectedFormat = useMemo(
     () => FORMATS.find((item) => item.id === format),
     [format],
   );
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/health`)
-      .then((response) => response.json())
-      .then((data) => setApiReady(data.gemini_configured))
-      .catch(() => setApiReady(false));
-  }, []);
 
   async function handleConvert(event) {
     event.preventDefault();
@@ -189,7 +180,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" id="top">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
@@ -200,17 +191,15 @@ export default function App() {
           </span>
           <span>Office AI</span>
         </a>
-        <div
-          className={`status-pill ${apiReady === true ? "is-ready" : ""}`}
-          title="FastAPI and Gemini connection status"
-        >
-          <span className="status-dot" />
-          {apiReady === null
-            ? "Checking API"
-            : apiReady
-              ? "Gemini ready"
-              : "Setup needed"}
-        </div>
+        <nav className="site-nav" aria-label="Main navigation">
+          <a href="#top">Home</a>
+          <a href="#converter">Converter</a>
+          <a href="#formats">Formats</a>
+        </nav>
+        <a className="nav-cta" href="#converter">
+          Start converting
+          <ArrowRight size={15} />
+        </a>
       </header>
 
       <main>
@@ -229,7 +218,7 @@ export default function App() {
           </p>
         </section>
 
-        <section className="workspace-grid">
+        <section className="workspace-grid" id="converter">
           <form className="converter-card" onSubmit={handleConvert}>
             <div className="card-heading">
               <div>
@@ -258,7 +247,7 @@ export default function App() {
               </span>
             </div>
 
-            <div className="format-section">
+            <div className="format-section" id="formats">
               <span className="step-label">02 / OUTPUT</span>
               <h2>Choose your file type</h2>
               <div className="format-grid">
@@ -388,7 +377,7 @@ export default function App() {
         </section>
 
         {history.length > 0 && (
-          <section className="history-section">
+          <section className="history-section" id="history">
             <div className="history-heading">
               <div>
                 <span className="step-label">BROWSER MEMORY</span>
@@ -425,9 +414,24 @@ export default function App() {
         )}
       </main>
 
-      <footer>
-        <span>Office AI</span>
-        <span>React + FastAPI + Gemini</span>
+      <footer className="site-footer">
+        <div className="footer-brand">
+          <span className="brand-mark footer-mark">
+            <WandSparkles size={17} />
+          </span>
+          <div>
+            <strong>Office AI</strong>
+            <span>Turn unstructured text into useful files.</span>
+          </div>
+        </div>
+        <nav className="footer-nav" aria-label="Footer navigation">
+          <a href="#top">Home</a>
+          <a href="#converter">Converter</a>
+          <a href="#formats">Formats</a>
+        </nav>
+        <span className="footer-copy">
+          &copy; {new Date().getFullYear()} Office AI
+        </span>
       </footer>
     </div>
   );
