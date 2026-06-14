@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -56,17 +56,18 @@ const FORMATS = [
   },
 ];
 
-const SAMPLE_TEXT = `Final Cost Breakdown
-Ryzen 5 3600 (Tray/No Box) - Used - Rs. 16,500
-Gigabyte B450M DS3H - Used - Rs. 21,500
-Corsair Vengeance LPX 16GB (2x8GB) 3200MHz - Used - Rs. 11,000
-Lexar NQ100 256GB - New - Rs. 7,200
-Sapphire Pulse RX 5700 XT 8GB - Used - Rs. 52,000
-Dell Professional P2419H (24" IPS 1080p) - Used - Rs. 20,000
-Basic Default Case - Used - Rs. 0 (Default with PC)
-PC & Monitor Total: Rs. 144,200
+const SAMPLE_TEXT = `Workshop Registration List
+Alex Morgan - alex@example.com - Product Design - Confirmed
+Jordan Lee - jordan@example.com - Marketing - Confirmed
+Taylor Smith - taylor@example.com - Engineering - Pending
+Casey Brown - casey@example.com - Customer Support - Confirmed
+Morgan Davis - morgan@example.com - Operations - Pending
 
-Remember to inspect the used monitor for white spots or dead pixels.`;
+Event: Team Collaboration Workshop
+Date: October 15
+Location: Main Conference Room
+
+Please organize the attendee details and event information into clear columns.`;
 
 function readHistory() {
   try {
@@ -116,19 +117,10 @@ export default function App() {
   const [history, setHistory] = useState(readHistory);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [apiReady, setApiReady] = useState(null);
-
   const selectedFormat = useMemo(
     () => FORMATS.find((item) => item.id === format),
     [format],
   );
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/health`)
-      .then((response) => response.json())
-      .then((data) => setApiReady(data.gemini_configured))
-      .catch(() => setApiReady(false));
-  }, []);
 
   async function handleConvert(event) {
     event.preventDefault();
@@ -189,7 +181,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" id="top">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
@@ -200,17 +192,15 @@ export default function App() {
           </span>
           <span>Office AI</span>
         </a>
-        <div
-          className={`status-pill ${apiReady === true ? "is-ready" : ""}`}
-          title="FastAPI and Gemini connection status"
-        >
-          <span className="status-dot" />
-          {apiReady === null
-            ? "Checking API"
-            : apiReady
-              ? "Gemini ready"
-              : "Setup needed"}
-        </div>
+        <nav className="site-nav" aria-label="Main navigation">
+          <a href="#top">Home</a>
+          <a href="#converter">Converter</a>
+          <a href="#formats">Formats</a>
+        </nav>
+        <a className="nav-cta" href="#converter">
+          Start converting
+          <ArrowRight size={15} />
+        </a>
       </header>
 
       <main>
@@ -229,7 +219,7 @@ export default function App() {
           </p>
         </section>
 
-        <section className="workspace-grid">
+        <section className="workspace-grid" id="converter">
           <form className="converter-card" onSubmit={handleConvert}>
             <div className="card-heading">
               <div>
@@ -249,7 +239,7 @@ export default function App() {
               <textarea
                 value={text}
                 onChange={(event) => setText(event.target.value)}
-                placeholder="Paste a price list, report, meeting notes, product data, research, or any unstructured text..."
+                placeholder="Paste a list, report, meeting notes, survey responses, or any unstructured text..."
                 maxLength={50000}
                 required
               />
@@ -258,7 +248,7 @@ export default function App() {
               </span>
             </div>
 
-            <div className="format-section">
+            <div className="format-section" id="formats">
               <span className="step-label">02 / OUTPUT</span>
               <h2>Choose your file type</h2>
               <div className="format-grid">
@@ -294,7 +284,7 @@ export default function App() {
               <input
                 value={instructions}
                 onChange={(event) => setInstructions(event.target.value)}
-                placeholder='For example: "Separate furniture from PC parts"'
+                placeholder='For example: "Sort entries by date and add a status column"'
                 maxLength={2000}
               />
             </label>
@@ -388,7 +378,7 @@ export default function App() {
         </section>
 
         {history.length > 0 && (
-          <section className="history-section">
+          <section className="history-section" id="history">
             <div className="history-heading">
               <div>
                 <span className="step-label">BROWSER MEMORY</span>
@@ -425,9 +415,26 @@ export default function App() {
         )}
       </main>
 
-      <footer>
-        <span>Office AI</span>
-        <span>React + FastAPI + Gemini</span>
+      <footer className="site-footer">
+        <div className="footer-brand">
+          <span className="brand-mark footer-mark">
+            <WandSparkles size={17} />
+          </span>
+          <div>
+            <strong>Office AI</strong>
+            <span className="footer-tagline">
+              Turn unstructured text into useful files.
+            </span>
+          </div>
+        </div>
+        <nav className="footer-nav" aria-label="Footer navigation">
+          <a href="#top">Home</a>
+          <a href="#converter">Converter</a>
+          <a href="#formats">Formats</a>
+        </nav>
+        <span className="footer-copy">
+          &copy; {new Date().getFullYear()} Office AI
+        </span>
       </footer>
     </div>
   );
